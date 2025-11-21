@@ -8,21 +8,29 @@
             "Galcvua\\JwtRefreshBundle\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Galcvua\\JwtRefreshBundle\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "galcvua"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": "^8.3",
-        "symfony/framework-bundle": "^6.4 || ^7.3",
-        "symfony/security-bundle": "^6.4 || ^7.3",
-        "symfony/http-kernel": "^6.4 || ^7.3",
-        "symfony/dependency-injection": "^6.4 || ^7.3",
-        "symfony/routing": "^6.4 || ^7.3"
+        "symfony/framework-bundle": "^7.3",
+        "symfony/security-bundle": "^7.3",
+        "symfony/http-kernel": "^7.3",
+        "symfony/dependency-injection": "^7.3",
+        "symfony/routing": "^7.3",
+        "lexik/jwt-authentication-bundle": "^3.1"
     },
     "require-dev": {
+        "api-platform/core": "^4.0",
         "phpstan/phpstan-symfony": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.89",
         "symfony/test-pack": "^1.2"
