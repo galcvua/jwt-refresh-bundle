@@ -11,16 +11,17 @@ final class AuthFlowTest extends WebTestCase
     #[RunInSeparateProcess]
     public function testLoginProvidesTokenAndAllowsAuthorizedRequest(): void
     {
-        $client = static::createClient();
+        $client = static::createHttpBrowser();
 
         $client->jsonRequest('POST', '/login', [
             'username' => 'user@example.com',
             'password' => 'password',
         ]);
 
-        self::assertResponseIsSuccessful();
+        $loginResponse = $client->getResponse();
+        self::assertSame(200, $loginResponse->getStatusCode());
 
-        $data = json_decode((string) $client->getResponse()->getContent(), true, flags: JSON_THROW_ON_ERROR);
+        $data = $loginResponse->toArray();
         self::assertArrayHasKey('token', $data);
         $token = $data['token'];
         self::assertIsString($token);
@@ -30,36 +31,38 @@ final class AuthFlowTest extends WebTestCase
             'HTTP_Authorization' => 'Bearer '.$token,
         ]);
 
-        self::assertResponseIsSuccessful();
+        $meResponse = $client->getResponse();
+        self::assertSame(200, $meResponse->getStatusCode());
 
-        $me = json_decode((string) $client->getResponse()->getContent(), true, flags: JSON_THROW_ON_ERROR);
+        $me = $meResponse->toArray();
         self::assertSame('user@example.com', $me['user'] ?? null);
     }
 
     #[RunInSeparateProcess]
     public function testRefreshAndLogoutFlow(): void
     {
-        $client = static::createClient();
+        $client = static::createHttpBrowser();
         $client->jsonRequest('POST', '/login', [
             'username' => 'user@example.com',
             'password' => 'password',
         ]);
-        self::assertResponseIsSuccessful();
+        self::assertSame(200, $client->getResponse()->getStatusCode());
 
         $client->request('POST', '/token/refresh');
 
-        self::assertResponseIsSuccessful();
+        $refreshResponse = $client->getResponse();
+        self::assertSame(200, $refreshResponse->getStatusCode());
 
-        $refreshedData = json_decode((string) $client->getResponse()->getContent(), true, flags: JSON_THROW_ON_ERROR);
+        $refreshedData = $refreshResponse->toArray();
         $refreshedToken = $refreshedData['token'] ?? '';
 
         self::assertIsString($refreshedToken);
         self::assertNotSame('', trim($refreshedToken));
 
         $client->request('POST', '/logout');
-        self::assertResponseStatusCodeSame(204);
+        self::assertSame(204, $client->getResponse()->getStatusCode());
 
         $client->request('POST', '/token/refresh');
-        self::assertResponseStatusCodeSame(401);
+        self::assertSame(401, $client->getResponse()->getStatusCode());
     }
 }

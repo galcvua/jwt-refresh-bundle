@@ -28,7 +28,7 @@ return static function (ContainerConfigurator $container): void {
             ],
             'login' => [
                 'pattern' => '^/login',
-                'stateless' => false,
+                'stateless' => true,
                 'provider' => 'app',
                 'json_login' => [
                     'check_path' => '/login',

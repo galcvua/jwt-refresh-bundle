@@ -1,4 +1,4 @@
-name: CI
+name: Tests
 
 on:
   push:
@@ -6,48 +6,20 @@ on:
   pull_request:
 
 jobs:
-  static-checks:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup PHP 8.3
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: json, mbstring
-
-      - name: Get Composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-php-8.3-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-8.3-composer-
-
-      - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist --no-progress
-
-      - name: Run PHPStan
-        run: vendor/bin/phpstan analyse
-
-      - name: Check code style
-        env:
-          PHP_CS_FIXER_IGNORE_ENV: 1
-        run: vendor/bin/php-cs-fixer fix --dry-run --diff
-
-  tests:
-    runs-on: ubuntu-latest
+  phpunit:
+    runs-on: ubuntu-24
     strategy:
       fail-fast: false
       matrix:
         php-version: ['8.3', '8.4', '8.5']
+
+    env:
+      APP_ENV: test
+      APP_DEBUG: 1
+      PANTHER_APP_ENV: test
+      PANTHER_WEB_SERVER_DIR: tests/Application/public
+      PANTHER_WEB_SERVER_ROUTER: tests/Application/public/router.php
+      BROWSER_ALWAYS_START_WEBSERVER: 1
 
     steps:
       - name: Checkout

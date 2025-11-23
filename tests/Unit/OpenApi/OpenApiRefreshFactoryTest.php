@@ -2,28 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Galcvua\JwtRefreshBundle\Tests\OpenApi;
+namespace Galcvua\JwtRefreshBundle\Tests\Unit\OpenApi;
 
 use ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface;
 use ApiPlatform\OpenApi\Model\Info;
 use ApiPlatform\OpenApi\Model\Paths;
 use ApiPlatform\OpenApi\OpenApi;
-use Galcvua\JwtRefreshBundle\OpenApi\OpenApiLogoutFactory;
+use Galcvua\JwtRefreshBundle\OpenApi\OpenApiRefreshFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-#[CoversClass(OpenApiLogoutFactory::class)]
-#[CoversMethod(OpenApiLogoutFactory::class, 'injectEndPoint')]
-final class OpenApiLogoutFactoryTest extends TestCase
+#[CoversClass(OpenApiRefreshFactory::class)]
+#[CoversMethod(OpenApiRefreshFactory::class, 'injectEndPoint')]
+final class OpenApiRefreshFactoryTest extends TestCase
 {
-    public function testInjectsLogoutEndpoint(): void
+    public function testInjectsRefreshEndpoint(): void
     {
-        $factory = new OpenApiLogoutFactory(
+        $refreshPath = '/token/refresh';
+
+        $factory = new OpenApiRefreshFactory(
             $this->createDecoratedFactory(),
-            $this->createUrlGenerator('/logout'),
-            '_logout_refresh',
+            $this->createUrlGenerator($refreshPath),
+            'refresh_route',
             ['JWT Refresh'],
         );
 
@@ -32,7 +34,7 @@ final class OpenApiLogoutFactoryTest extends TestCase
         $ref = new \ReflectionClass($factory);
         $pathProp = $ref->getProperty('path');
         $pathProp->setAccessible(true);
-        $pathProp->setValue($factory, '/logout');
+        $pathProp->setValue($factory, $refreshPath);
 
         $openApiProp = $ref->getProperty('openApi');
         $openApiProp->setAccessible(true);
@@ -42,9 +44,10 @@ final class OpenApiLogoutFactoryTest extends TestCase
         $method->setAccessible(true);
         $method->invoke($factory);
 
-        $pathItem = $openApi->getPaths()->getPath('/logout');
+        $pathItem = $openApi->getPaths()->getPath($refreshPath);
+
         self::assertNotNull($pathItem);
-        self::assertSame('token_logout_post', $pathItem->getPost()?->getOperationId());
+        self::assertSame('token_refresh_post', $pathItem->getPost()?->getOperationId());
     }
 
     private function createDecoratedFactory(): OpenApiFactoryInterface

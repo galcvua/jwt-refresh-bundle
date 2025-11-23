@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Galcvua\JwtRefreshBundle\Tests\Controller;
+namespace Galcvua\JwtRefreshBundle\Tests\Unit\Controller;
 
 use Galcvua\JwtRefreshBundle\Controller\JwtRefreshController;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;

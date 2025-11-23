@@ -11,7 +11,8 @@ return static function (ContainerConfigurator $container): void {
         'http_method_override' => false,
         'test' => true,
         'session' => [
-            'storage_factory_id' => 'session.storage.factory.mock_file',
+            'handler_id' => 'session.handler.native_file',
+            'save_path' => '%kernel.project_dir%/var/cache/%kernel.environment%/sessions/',
         ],
         'router' => [
             'resource' => '%kernel.project_dir%/config/routes.php',

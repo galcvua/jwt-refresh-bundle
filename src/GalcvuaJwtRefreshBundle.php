@@ -63,8 +63,7 @@ final class GalcvuaJwtRefreshBundle extends AbstractBundle
         $builder->setParameter('galcvua_jwt_refresh.refresh_token_firewall', $config['refresh_token_firewall']);
         $builder->setParameter('galcvua_jwt_refresh.refresh_token_route', $config['refresh_token_route']);
 
-        $servicesConfigPath = __DIR__.'/../config/services.php';
-        $container->import(is_file($servicesConfigPath) ? $servicesConfigPath : '../config/services.yaml');
+        $container->import('../config/services.php');
 
         $services = $container->services();
 

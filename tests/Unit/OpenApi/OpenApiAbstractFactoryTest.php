@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Galcvua\JwtRefreshBundle\Tests\OpenApi;
+namespace Galcvua\JwtRefreshBundle\Tests\Unit\OpenApi;
 
 use ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface;
 use ApiPlatform\OpenApi\Model\Info;

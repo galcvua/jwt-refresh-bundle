@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Galcvua\JwtRefreshBundle\Tests\EventSubscriber;
+namespace Galcvua\JwtRefreshBundle\Tests\Unit\EventSubscriber;
 
 use Galcvua\JwtRefreshBundle\EventSubscriber\LogoutSubscriber;
 use PHPUnit\Framework\Attributes\CoversClass;
