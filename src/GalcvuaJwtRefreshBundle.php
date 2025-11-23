@@ -27,7 +27,6 @@ final class GalcvuaJwtRefreshBundle extends AbstractBundle
                 ->arrayNode('open_api')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('enabled')->defaultTrue()->end()
                         ->arrayNode('refresh')
                             ->addDefaultsIfNotSet()
                             ->children()
