@@ -1,4 +1,5 @@
-[![Tests](https://github.com/galcvua/jwt-refresh-bundle/actions/workflows/ci.yml/badge.svg)](https://github.com/galcvua/jwt-refresh-bundle/actions/workflows/tests.yml)
+[![Static Checks](https://github.com/galcvua/jwt-refresh-bundle/actions/workflows/static-checks.yml/badge.svg)](https://github.com/galcvua/jwt-refresh-bundle/actions/workflows/static-checks.yml)
+[![Tests](https://github.com/galcvua/jwt-refresh-bundle/actions/workflows/tests.yml/badge.svg)](https://github.com/galcvua/jwt-refresh-bundle/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/galcvua/jwt-refresh-bundle/branch/master/graph/badge.svg)](https://codecov.io/gh/galcvua/jwt-refresh-bundle)
 
 # JWT Refresh Bundle
