@@ -11,9 +11,28 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.3', '8.4', '8.5']
+        include:
+          - php-version: '8.3'
+            symfony-version: '7.3.*'
+            coverage: false
+          - php-version: '8.3'
+            symfony-version: '7.4.*'
+            coverage: true
+          - php-version: '8.4'
+            symfony-version: '7.4.*'
+            coverage: false
+          - php-version: '8.5'
+            symfony-version: '7.4.*'
+            coverage: false
+          - php-version: '8.4'
+            symfony-version: '8.0.*'
+            coverage: false
+          - php-version: '8.5'
+            symfony-version: '8.0.*'
+            coverage: false
 
     env:
+      SYMFONY_REQUIRE: ${{ matrix.symfony-version }}
       APP_ENV: test
       APP_DEBUG: 1
       PANTHER_APP_ENV: test
@@ -40,23 +59,23 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-symfony-${{ matrix.symfony-version }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.php-version }}-composer-
+            ${{ runner.os }}-php-${{ matrix.php-version }}-symfony-${{ matrix.symfony-version }}-composer-
 
       - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist --no-progress
+        run: composer update --no-interaction --prefer-dist --no-progress --with-all-dependencies
 
       - name: Run tests
-        if: matrix.php-version != '8.3'
+        if: !matrix.coverage
         run: vendor/bin/phpunit
 
       - name: Run tests with coverage
-        if: matrix.php-version == '8.3'
+        if: matrix.coverage
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
 
       - name: Upload coverage to Codecov
-        if: matrix.php-version == '8.3'
+        if: matrix.coverage
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
