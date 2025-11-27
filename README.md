@@ -9,6 +9,8 @@ This bundle manages refresh tokens for JWT (JSON Web Tokens) in the simplest and
 It integrates with the [LexikJWTAuthenticationBundle](https://github.com/lexik/LexikJWTAuthenticationBundle), using **HTTP-only cookies** backed by Symfony’s session system.
 No Doctrine ORM/ODM or external persistence is required, and your API remains stateless for regular requests.
 
+It is compatible with (and tested on) PHP 8.3+ and Symfony 7.3–8.0.
+
 ## Features
 
 - Refresh JWTs **without persisting** refresh tokens.
