@@ -67,7 +67,7 @@ jobs:
         run: composer update --no-interaction --prefer-dist --no-progress --with-all-dependencies
 
       - name: Run tests
-        if: !matrix.coverage
+        if: ${{ !matrix.coverage }}
         run: vendor/bin/phpunit
 
       - name: Run tests with coverage
